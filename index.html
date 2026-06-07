@@ -132,6 +132,29 @@
     color: var(--fg2); font-weight: 400;
   }
 
+  /* Video preview cards */
+  .video-thumb-preview {
+    aspect-ratio: 16/9; overflow: hidden; background: #111;
+    position: relative;
+  }
+  .video-thumb-preview video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .video-play-badge {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.25); transition: background 0.2s;
+  }
+  .card:hover .video-play-badge { background: rgba(0,0,0,0.1); }
+  .play-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+  }
+  .card:hover .play-circle { transform: scale(1.1); }
+  .play-circle svg { width: 18px; height: 18px; margin-left: 3px; }
+
   footer { padding: 2rem 4rem; text-align: center; font-size: 0.82rem; color: var(--fg3); }
 
   @media (max-width: 700px) {
@@ -151,8 +174,9 @@
   <div class="logo">Christopher Wang</div>
   <ul class="nav-links">
     <li><a href="#" class="active">Home</a></li>
-    <a href="character-concepts.html">Character Concepts</a>
-    <a href="personal.html">Personal Work</a>
+    <li><a href="character-concepts.html">Character Concepts</a></li>
+    <li><a href="animations.html">2D Animations</a></li>
+    <li><a href="personal.html">Personal Work</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -160,7 +184,7 @@
 <section class="hero">
   <div class="hero-text">
     <!-- <p class="section-label">Available for projects</p> -->
-    <h1>Designer </h1>
+    <h1>Animator </h1>
     <!-- <p>I craft thoughtful, functional web experiences — from concept to code. Based in [City], open to remote.</p> -->
     <div>
       <a href="#character-concepts" class="btn">View my work →</a>
@@ -169,6 +193,67 @@
   </div>
   <!-- star logo -->
   <!-- <div class="hero-visual">✦</div> -->
+</section>
+
+<section class="work" id="animations">
+  <div class="work-header">
+    <div>
+      <p class="section-label">2D Animations</p>
+      <h2>2D Animations</h2>
+    </div>
+    <a href="animations.html">See all →</a>
+  </div>
+  <div class="projects">
+
+    <!-- Replace src with your actual video filenames -->
+    <a href="animations.html" class="card">
+      <div class="video-thumb-preview">
+        <video src="videos/different-balls.mp4" muted preload="metadata"></video>
+        <div class="video-play-badge">
+          <div class="play-circle">
+            <svg viewBox="0 0 24 24" fill="#1a1a18"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">June 2026</p>
+        <h3>3 different balls</h3>
+      </div>
+    </a>
+
+    <a href="animations.html" class="card">
+      <div class="video-thumb-preview">
+        <video src="videos/hammer-v2.mp4" muted preload="metadata"></video>
+        <div class="video-play-badge">
+          <div class="play-circle">
+            <svg viewBox="0 0 24 24" fill="#1a1a18"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">June 2026</p>
+        <h3>Falling Hammer</h3>
+      </div>
+    </a>
+
+    <a href="animations.html" class="card">
+      <div class="video-thumb-preview">
+        <video src="videos/pendulum-v2.mp4" muted preload="metadata"></video>
+        <div class="video-play-badge">
+          <div class="play-circle">
+            <svg viewBox="0 0 24 24" fill="#1a1a18"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">May 2026</p>
+        <h3>3D Pendulum</h3>
+      </div>
+    </a>
+
+
+
+  </div>
 </section>
 
 <section class="work" id="character-concepts">
@@ -213,6 +298,8 @@
 
   </div>
 </section>
+
+
 
 <section class="about" id="personal">
   <div class="work-header">

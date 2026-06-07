@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>2D Animations — Christopher Wang</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --fg: #1a1a18;
+    --fg2: #5a5a54;
+    --fg3: #9a9a90;
+    --bg: #f5f3ee;
+    --bg2: #edeae2;
+    --accent: #c85a2a;
+    --card: #fff;
+    --border: rgba(0,0,0,0.08);
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem; position: sticky; top: 0;
+    background: rgba(245,243,238,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); z-index: 100;
+  }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--fg); letter-spacing: -0.02em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.88rem; color: var(--fg2); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a.active { color: var(--fg); font-weight: 500; }
+
+  .page-header {
+    max-width: 1100px; margin: 0 auto;
+    padding: 3rem 4rem 2rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .section-label {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    letter-spacing: -0.03em; line-height: 1.05;
+  }
+  .page-header p {
+    font-size: 0.95rem; color: var(--fg2); font-weight: 300;
+    margin-top: 0.75rem; max-width: 400px; line-height: 1.65;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.85rem; color: var(--fg2); text-decoration: none;
+    padding: 0.6rem 1.2rem; border-radius: 50px;
+    border: 1px solid var(--border); background: var(--card);
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Video grid */
+  .video-wrap {
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 4rem 6rem;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .video-card {
+    background: var(--card); border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .video-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+
+  .video-thumb {
+    position: relative; background: #111; cursor: pointer;
+    aspect-ratio: 16/9; overflow: hidden;
+  }
+
+  .video-thumb video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* Play button overlay */
+  .play-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.25);
+    transition: background 0.2s;
+  }
+  .video-thumb:hover .play-overlay { background: rgba(0,0,0,0.1); }
+  .video-thumb.playing .play-overlay { display: none; }
+
+  .play-btn {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+  }
+  .video-thumb:hover .play-btn { transform: scale(1.08); }
+  .play-btn svg { width: 22px; height: 22px; margin-left: 3px; }
+
+  .video-info { padding: 1.25rem; }
+  .video-tag {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--fg3); margin-bottom: 0.4rem;
+  }
+  .video-info h3 { font-size: 1rem; font-weight: 500; color: var(--fg); margin-bottom: 0.35rem; }
+  .video-info p { font-size: 0.85rem; color: var(--fg2); line-height: 1.55; font-weight: 300; }
+
+  /* Lightbox / fullscreen video player */
+  #video-lightbox {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.92);
+    align-items: center; justify-content: center;
+  }
+  #video-lightbox.open { display: flex; }
+
+  #video-lightbox video {
+    max-width: 90vw; max-height: 85vh;
+    border-radius: 10px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  }
+
+  .lightbox-close {
+    position: fixed; top: 1.5rem; right: 2rem;
+    font-size: 1.5rem; color: rgba(255,255,255,0.6);
+    cursor: pointer; background: none; border: none;
+    transition: color 0.2s; line-height: 1;
+  }
+  .lightbox-close:hover { color: #fff; }
+
+  .expand-btn {
+    position: absolute; bottom: 0.75rem; right: 0.75rem;
+    background: rgba(0,0,0,0.5); border: none; border-radius: 6px;
+    color: #fff; font-size: 0.75rem; padding: 0.35rem 0.6rem;
+    cursor: pointer; opacity: 0; transition: opacity 0.2s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .video-thumb:hover .expand-btn { opacity: 1; }
+
+  @media (max-width: 800px) {
+    .video-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .page-header { padding: 2rem 1.5rem 1.5rem; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    .video-wrap { padding: 0 1.5rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Christopher Wang</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="character-concepts.html">Character Concepts</a></li>
+    <li><a href="animations.html">2D Animations</a></li>
+    <li><a href="personal.html">Personal Work</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div>
+    <p class="section-label">2D Animations</p>
+    <h1>2D Animations</h1>
+    <p>Click any video to play. Click the expand icon to watch fullscreen.</p>
+  </div>
+  <a href="index.html" class="back-btn">← Back to home</a>
+</div>
+
+<div class="video-wrap">
+  <div class="video-grid">
+
+    <!-- VIDEO CARD — duplicate this block for each animation -->
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/different-balls.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">June 2026</p>
+        <h3>Different Balls</h3>
+        <p>Squash and stretch for different types of bouncing balls.</p>
+      </div>
+    </div>
+
+    
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/hammer.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">June 2026</p>
+        <h3>Falling Hammer</h3>
+        <p>Slow out and impact compression.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/hammer-v2.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">June 2026</p>
+        <h3>Falling Hammer</h3>
+        <p>Added a little perspective.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/pendulum-v2.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">May 2026</p>
+        <h3>3D Pendulum</h3>
+        <p>Ease in/out.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/pendulum.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">May 2026</p>
+        <h3>Pendulum</h3>
+        <p>Ease in/out.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/revolving-ball.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">May 2026</p>
+        <h3>Revolving Ball</h3>
+        <p>Ease in/out.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="togglePlay(this)">
+        <video src="videos/bouncing-ball.mp4" preload="metadata" loop></video>
+        <div class="play-overlay">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="openFullscreen(event, this)">
+          ⛶ Fullscreen
+        </button>
+      </div>
+      <div class="video-info">
+        <p class="video-tag">May 2026</p>
+        <h3>Bouncing Ball</h3>
+        <p>With gravity</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Fullscreen lightbox -->
+<div id="video-lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <video id="lightbox-video" controls></video>
+</div>
+
+<script>
+  function togglePlay(thumb) {
+    const video = thumb.querySelector('video');
+    if (video.paused) {
+      // Pause all other videos first
+      document.querySelectorAll('.video-thumb video').forEach(v => {
+        v.pause();
+        v.closest('.video-thumb').classList.remove('playing');
+      });
+      video.play();
+      thumb.classList.add('playing');
+    } else {
+      video.pause();
+      thumb.classList.remove('playing');
+    }
+  }
+
+  function openFullscreen(e, btn) {
+    e.stopPropagation(); // don't trigger togglePlay
+    const video = btn.closest('.video-thumb').querySelector('video');
+    const lightboxVideo = document.getElementById('lightbox-video');
+    lightboxVideo.src = video.src;
+    lightboxVideo.currentTime = video.currentTime;
+    lightboxVideo.play();
+    document.getElementById('video-lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    const lightboxVideo = document.getElementById('lightbox-video');
+    lightboxVideo.pause();
+    lightboxVideo.src = '';
+    document.getElementById('video-lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close lightbox on background click
+  document.getElementById('video-lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  // Escape key closes lightbox
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
