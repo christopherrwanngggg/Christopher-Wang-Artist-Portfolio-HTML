@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>2D Animations — Christopher Wang</title>
+<title>3D Animations — Christopher Wang</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -163,7 +163,8 @@
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="character-concepts.html">Character Concepts</a></li>
-    <li><a href="animations.html">2D Animations</a></li>
+    <li><a href="3Danimations.html">3D Animations</a></li>
+    <li><a href="2Danimations.html">2D Animations</a></li>
     <li><a href="personal.html">Personal Work</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
@@ -171,8 +172,8 @@
 
 <div class="page-header">
   <div>
-    <p class="section-label">2D Animations</p>
-    <h1>2D Animations</h1>
+    <p class="section-label">3D Animations</p>
+    <h1>3D Animations</h1>
     <p>Click any video to play. Click the expand icon to watch fullscreen.</p>
   </div>
   <a href="index.html" class="back-btn">← Back to home</a>
@@ -185,7 +186,7 @@
 
     <div class="video-card">
       <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/walk-cycle.mp4" preload="metadata" loop></video>
+        <video src="videos/rocketv3.mp4" preload="metadata" loop></video>
         <div class="play-overlay">
           <div class="play-btn">
             <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
@@ -197,161 +198,8 @@
       </div>
       <div class="video-info">
         <p class="video-tag">June 2026</p>
-        <h3>First Walk Cycle</h3>
-        <p>16 unique drawings</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/bouncing-ball-perspective.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">June 2026</p>
-        <h3>Perspective Ball</h3>
-        <p>Bouncing ball with some perspective</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/different-balls.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">June 2026</p>
-        <h3>Different Balls</h3>
-        <p>Squash and stretch for different types of bouncing balls.</p>
-      </div>
-    </div>
-
-    
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/hammer.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">June 2026</p>
-        <h3>Falling Hammer</h3>
-        <p>Slow out and impact compression.</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/hammer-v2.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">June 2026</p>
-        <h3>Falling Hammer</h3>
-        <p>Added a little perspective.</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/pendulum-v2.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">May 2026</p>
-        <h3>3D Pendulum</h3>
-        <p>Ease in/out.</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/pendulum.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">May 2026</p>
-        <h3>Pendulum</h3>
-        <p>Ease in/out.</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/revolving-ball.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">May 2026</p>
-        <h3>Revolving Ball</h3>
-        <p>Ease in/out.</p>
-      </div>
-    </div>
-
-    <div class="video-card">
-      <div class="video-thumb" onclick="togglePlay(this)">
-        <video src="videos/bouncing-ball.mp4" preload="metadata" loop></video>
-        <div class="play-overlay">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24" fill="var(--fg)"><polygon points="5,3 19,12 5,21"/></svg>
-          </div>
-        </div>
-        <button class="expand-btn" onclick="openFullscreen(event, this)">
-          ⛶ Fullscreen
-        </button>
-      </div>
-      <div class="video-info">
-        <p class="video-tag">May 2026</p>
-        <h3>Bouncing Ball</h3>
-        <p>With gravity</p>
+        <h3>Rocket Takeoff</h3>
+        <p>Autodesk Maya</p>
       </div>
     </div>
 
